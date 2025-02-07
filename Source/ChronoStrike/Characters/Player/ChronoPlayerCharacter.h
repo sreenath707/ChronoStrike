@@ -35,6 +35,7 @@ protected:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* inputComponent)override;
 	virtual void BeginPlay()override;
+	virtual void PossessedBy(AController* controller)override;
 
 private:
 	void Input_Move(const FInputActionValue& inputActionValue);

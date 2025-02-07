@@ -14,6 +14,7 @@ AChronoPlayerCharacter::AChronoPlayerCharacter()
 	SpringArm->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
+	AbilitySystemComponent = CreateDefaultSubobject<UChronoAbilitySystemComponent>("AbilitySystemComponent");
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
@@ -34,7 +35,7 @@ void AChronoPlayerCharacter::SetupPlayerInputComponent(UInputComponent* inputCom
 	checkf(chronoInputComponent, TEXT("Input component is not setup properly"));
 	chronoInputComponent->BindActionByTag(inputConfig, ChronoGameplayTags::Input_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	chronoInputComponent->BindActionByTag(inputConfig, ChronoGameplayTags::Input_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
-	chronoInputComponent->BindAbilityActions(inputConfig, ETriggerEvent::Triggered, this, &ThisClass::Input_AbilityStart);
+	chronoInputComponent->BindAbilityActions(inputConfig, ETriggerEvent::Started, this, &ThisClass::Input_AbilityStart);
 }
 
 void AChronoPlayerCharacter::BeginPlay()
@@ -42,6 +43,11 @@ void AChronoPlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	checkf(StartupAbilities, TEXT("Startup Abilities not assigned for player"));
 	StartupAbilities->GiveAbilities(AbilitySystemComponent, 0);
+}
+
+void AChronoPlayerCharacter::PossessedBy(AController* controller)
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
 void AChronoPlayerCharacter::Input_Move(const FInputActionValue& inputActionValue)
