@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "ChronoStrike/Characters/ChronoCharacterBase.h"
+#include <GameplayTagContainer.h>
 #include "ChronoPlayerCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
 class UInputConfigDataAsset;
+class UHeroStartupAbilitiesDataAsset;
 struct FInputActionValue;
 
 /**
@@ -28,10 +30,14 @@ protected:
 	TObjectPtr<UCameraComponent> Camera;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputConfigDataAsset> inputConfig;
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UHeroStartupAbilitiesDataAsset> StartupAbilities;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* inputComponent)override;
+	virtual void BeginPlay()override;
 
 private:
 	void Input_Move(const FInputActionValue& inputActionValue);
 	void Input_Look(const FInputActionValue& inputActionValue);
+	void Input_AbilityStart(FGameplayTag inputTag);
 };

@@ -5,6 +5,8 @@
 #include "ChronoStrike/Input/ChronoEnhancedInputComponent.h"
 #include "ChronoStrike/GameplayTags/ChronoGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
+#include "ChronoStrike/AbilitySystem/ChronoAbilitySystemComponent.h"
+#include "ChronoStrike/DataAssets/StartupAbilities/HeroStartupAbilitiesDataAsset.h"
 
 AChronoPlayerCharacter::AChronoPlayerCharacter()
 {
@@ -32,6 +34,14 @@ void AChronoPlayerCharacter::SetupPlayerInputComponent(UInputComponent* inputCom
 	checkf(chronoInputComponent, TEXT("Input component is not setup properly"));
 	chronoInputComponent->BindActionByTag(inputConfig, ChronoGameplayTags::Input_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	chronoInputComponent->BindActionByTag(inputConfig, ChronoGameplayTags::Input_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	chronoInputComponent->BindAbilityActions(inputConfig, ETriggerEvent::Triggered, this, &ThisClass::Input_AbilityStart);
+}
+
+void AChronoPlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	checkf(StartupAbilities, TEXT("Startup Abilities not assigned for player"));
+	StartupAbilities->GiveAbilities(AbilitySystemComponent, 0);
 }
 
 void AChronoPlayerCharacter::Input_Move(const FInputActionValue& inputActionValue)
@@ -47,3 +57,18 @@ void AChronoPlayerCharacter::Input_Look(const FInputActionValue& inputActionValu
 	AddControllerYawInput(input.X);
 	AddControllerPitchInput(-input.Y);
 }
+
+void AChronoPlayerCharacter::Input_AbilityStart(FGameplayTag inputTag)
+{
+	for (FGameplayAbilitySpec abilitySpec : AbilitySystemComponent->GetActivatableAbilities())
+	{
+		if (abilitySpec.DynamicAbilityTags.HasTagExact(inputTag))
+		{
+			if (!abilitySpec.IsActive())
+			{
+				AbilitySystemComponent->TryActivateAbility(abilitySpec.Handle);
+			}
+		}
+	}
+}
+

@@ -25,4 +25,17 @@ public:
 		UInputAction* inputAction = inputConfig->FindActionByTag(inputTag);
 		BindAction(inputAction, triggerEvent, object, fn);
 	}
+
+	template<class userObject,class callbackFn>
+	FORCEINLINE void BindAbilityActions(UInputConfigDataAsset* inputConfig, ETriggerEvent triggerEvent, userObject* object, callbackFn fn)
+	{
+		check(inputConfig);
+		for (FInputActionTagMap actionMap : inputConfig->AbilityInputActions)
+		{
+			if (actionMap.InputAction && actionMap.InputTag.IsValid())
+			{
+				BindAction(actionMap.InputAction, triggerEvent, object, fn, actionMap.InputTag);
+			}
+		}
+	}
 };

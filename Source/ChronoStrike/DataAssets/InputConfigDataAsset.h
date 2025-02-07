@@ -34,5 +34,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TArray<FInputActionTagMap> inputActionTagMap;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TArray<FInputActionTagMap> AbilityInputActions;
+
 	UInputAction* FindActionByTag(FGameplayTag inputTag);
 };

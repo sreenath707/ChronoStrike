@@ -4,26 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "ChronoCharacterBase.generated.h"
 
+class UChronoAbilitySystemComponent;
+
 UCLASS()
-class CHRONOSTRIKE_API AChronoCharacterBase : public ACharacter
+class CHRONOSTRIKE_API AChronoCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AChronoCharacterBase();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UChronoAbilitySystemComponent* AbilitySystemComponent;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent()const override;
 };
