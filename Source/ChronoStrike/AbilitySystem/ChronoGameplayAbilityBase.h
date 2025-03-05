@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "ChronoStrike/Characters/ChronoCharacterBase.h"
 #include "ChronoGameplayAbilityBase.generated.h"
 
 

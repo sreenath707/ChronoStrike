@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "ChronoStrike/Characters/ChronoCharacterBase.h"
 #include <GameplayTagContainer.h>
+#include "ChronoStrike/Components/CombatComponent.h"
 #include "ChronoPlayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -32,6 +33,8 @@ protected:
 	TObjectPtr<UInputConfigDataAsset> inputConfig;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UHeroStartupAbilitiesDataAsset> StartupAbilities;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<UCombatComponent> CombatComponent;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* inputComponent)override;
 	virtual void BeginPlay()override;

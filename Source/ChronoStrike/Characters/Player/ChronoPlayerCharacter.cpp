@@ -15,6 +15,7 @@ AChronoPlayerCharacter::AChronoPlayerCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 	AbilitySystemComponent = CreateDefaultSubobject<UChronoAbilitySystemComponent>("AbilitySystemComponent");
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>("Combat Component");
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
