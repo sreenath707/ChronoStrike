@@ -30,3 +30,13 @@ void UCombatComponent::EquipDefaultWeapon()
 	EquippedGun->AttachToComponent(playerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("Weapon_Hand_Socket"));
 }
 
+void UCombatComponent::Aim()
+{
+	playerAimState = EChronoAimState::EAS_Aim;
+}
+
+void UCombatComponent::UnAim()
+{
+	playerAimState = EChronoAimState::EAS_Hold;
+}
+

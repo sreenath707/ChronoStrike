@@ -44,4 +44,5 @@ private:
 	void Input_Move(const FInputActionValue& inputActionValue);
 	void Input_Look(const FInputActionValue& inputActionValue);
 	void Input_AbilityStart(FGameplayTag inputTag);
+	void Input_AbilityEnd(FGameplayTag inputTag);
 };

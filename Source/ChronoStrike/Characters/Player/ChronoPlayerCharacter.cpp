@@ -37,6 +37,7 @@ void AChronoPlayerCharacter::SetupPlayerInputComponent(UInputComponent* inputCom
 	chronoInputComponent->BindActionByTag(inputConfig, ChronoGameplayTags::Input_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	chronoInputComponent->BindActionByTag(inputConfig, ChronoGameplayTags::Input_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 	chronoInputComponent->BindAbilityActions(inputConfig, ETriggerEvent::Started, this, &ThisClass::Input_AbilityStart);
+	chronoInputComponent->BindAbilityActions(inputConfig, ETriggerEvent::Completed, this, &ThisClass::Input_AbilityEnd);
 }
 
 void AChronoPlayerCharacter::BeginPlay()
@@ -74,6 +75,20 @@ void AChronoPlayerCharacter::Input_AbilityStart(FGameplayTag inputTag)
 			if (!abilitySpec.IsActive())
 			{
 				AbilitySystemComponent->TryActivateAbility(abilitySpec.Handle);
+			}
+		}
+	}
+}
+
+void AChronoPlayerCharacter::Input_AbilityEnd(FGameplayTag inputTag)
+{
+	for (FGameplayAbilitySpec abilitySpec : AbilitySystemComponent->GetActivatableAbilities())
+	{
+		if (abilitySpec.DynamicAbilityTags.HasTagExact(inputTag))
+		{
+			if (abilitySpec.IsActive() && abilitySpec.DynamicAbilityTags.HasTag(ChronoGameplayTags::Input_Held))
+			{
+				AbilitySystemComponent->CancelAbilityHandle(abilitySpec.Handle);
 			}
 		}
 	}
